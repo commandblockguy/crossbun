@@ -18,6 +18,7 @@ static uint16_t palette_dark[] = {
         [BORDER_COLOR] = gfx_RGBTo1555(0, 0, 0),
         [TEXT_COLOR] = gfx_RGBTo1555(208, 208, 208),
         [SOLVED_CLUE_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
+        [NUMBER_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
         [SELECTED_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
         [CURSOR_BACKGROUND_COLOR] = gfx_RGBTo1555(118, 76, 39),
         [REF_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(0, 0, 0),
@@ -169,6 +170,9 @@ void draw_game(const struct game_state *state) {
     const struct cursor *cursor = &state->cursor;
     const struct solution *solution = &state->solution;
 
+    // todo: remove
+    gfx_FillScreen(BACKGROUND_COLOR);
+
     int base_x = 0;
     int base_y = 0;
     uint8_t cell_size = min(MAX_GRID_HEIGHT / puzzle->height, MAX_GRID_WIDTH / puzzle->width);
@@ -180,8 +184,6 @@ void draw_game(const struct game_state *state) {
     const struct cell *selected_cell = &puzzle->cells[cursor->row][cursor->col];
     uint8_t selected_clue_num = cursor->dir == ACROSS ? selected_cell->clue_a : selected_cell->clue_d;
 
-    gfx_SetTextFGColor(TEXT_COLOR);
-    gfx_SetTextScale(text_scale, text_scale);
     for (uint8_t row = 0; row < puzzle->height; row++) {
         for (uint8_t col = 0; col < puzzle->width; col++) {
             const struct cell *current_cell = &puzzle->cells[row][col];
@@ -201,6 +203,16 @@ void draw_game(const struct game_state *state) {
                     gfx_SetColor(CURSOR_BACKGROUND_COLOR);
                 }
                 gfx_FillRectangle_NoClip(base_x + cell_size * col + 1, base_y + cell_size * row + 1, cell_size - 1, cell_size - 1);
+
+                if (c == EMPTY_CELL && current_cell->word_num) {
+                    gfx_SetTextFGColor(NUMBER_TEXT_COLOR);
+                    gfx_SetTextScale(1, 1);
+                    gfx_SetTextXY(base_x + col * cell_size + 1, base_y + row * cell_size + 1);
+                    gfx_PrintUInt(current_cell->word_num, 0);
+                }
+
+                gfx_SetTextFGColor(TEXT_COLOR);
+                gfx_SetTextScale(text_scale, text_scale);
 
                 uint8_t letter_offset_x = (cell_size + 2 - (gfx_GetCharWidth(c) - text_scale)) / 2;
                 uint8_t letter_offset_y = (cell_size + 2 - text_scale * (TEXT_HEIGHT - 1)) / 2;

@@ -15,6 +15,7 @@ struct cell {
     char content;
     uint8_t clue_a; // Across clue number
     uint8_t clue_d; // Down clue number
+    uint8_t word_num; // Word number if start of word, 0 otherwise
 };
 
 enum word_direction : uint8_t {

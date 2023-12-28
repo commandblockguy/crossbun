@@ -32,6 +32,7 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
                 if (realloced == NULL) goto error;
                 result->num_clue_pairs++;
                 result->clues = realloced;
+                cell->word_num = result->num_clue_pairs;
                 struct clue_pair *current_pair = &result->clues[result->num_clue_pairs - 1];
                 current_pair->across = NULL;
                 current_pair->down = NULL;

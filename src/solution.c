@@ -51,6 +51,15 @@ void set_cell(struct solution *solution, uint8_t row, uint8_t col, char c) {
     solution->filled_words[clue_d - 1][DOWN] = is_word_filled(solution, &ref_d);
 }
 
-struct word_ref next_unfilled(const struct solution sol, struct word_ref *ref) {
-
+// first unfilled word not before ref
+struct word_ref next_unfilled(const struct solution *sol, const struct word_ref *ref) {
+    struct word_ref result = *ref;
+    do {
+        if (!sol->filled_words[result.num - 1][result.dir]) {
+            return result;
+        }
+        result = next_word(sol->puzzle, &result);
+    } while (result.dir != ref->dir || result.num != ref->num);
+    result.num = 0;
+    return result;
 }

@@ -22,6 +22,13 @@ static bool has_edge(kb_lkey_t key) {
     return (rising_edges[key >> 8] & key) != 0;
 }
 
+struct word_ref get_cursor_word_ref(const struct puzzle *puzzle, const struct cursor *cursor) {
+    const struct cell *cell = &PUZ_CURSOR_CELL(puzzle, cursor);
+    uint8_t num = cursor->dir == ACROSS ? cell->clue_a : cell->clue_d;
+    struct word_ref result = { .dir = cursor->dir, .num = num };
+    return result;
+}
+
 static void cursor_to_word(struct cursor *cursor, const struct solution *sol, const struct word_ref *word_ref) {
     const struct clue *clue = get_clue(sol->puzzle, word_ref);
     if (!clue) return;
@@ -90,8 +97,12 @@ static void cursor_advance(struct cursor *cursor, const struct solution *sol) {
     if (cursor->row >= sol->puzzle->height ||
         cursor->col >= sol->puzzle->width ||
         SOL_CURSOR_CELL(sol, cursor) == BLACK_CELL) {
-        // todo: seek to first word not before cursor
-        *cursor = orig_cursor;
+        struct word_ref current = get_cursor_word_ref(sol->puzzle, &orig_cursor);
+        struct word_ref new = next_unfilled(sol, &current);
+        if (new.num == 0) {
+            new = next_word(sol->puzzle, &current);
+        }
+        cursor_to_word(cursor, sol, &new);
     }
 }
 

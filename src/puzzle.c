@@ -95,6 +95,7 @@ struct word_ref next_word(const struct puzzle *puzzle, const struct word_ref *re
         result.num++;
         if (result.num > puzzle->num_clue_pairs) {
             result.dir = !result.dir;
+            result.num = 0;
         }
     } while(!get_clue(puzzle, &result));
     return result;

@@ -55,6 +55,7 @@ void puzzle_free(struct puzzle *puzzle);
 struct clue *get_clue(const struct puzzle *puzzle, const struct word_ref *ref);
 
 struct word_ref next_word(const struct puzzle *puzzle, const struct word_ref *ref);
+struct word_ref prev_word(const struct puzzle *puzzle, const struct word_ref *ref);
 
 #define PUZ_CURSOR_CELL(puz, cursor) ((puz)->cells[(cursor)->row][(cursor)->col])
 

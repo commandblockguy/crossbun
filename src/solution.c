@@ -52,13 +52,32 @@ void set_cell(struct solution *solution, uint8_t row, uint8_t col, char c) {
 }
 
 // first unfilled word not before ref
-struct word_ref next_unfilled(const struct solution *sol, const struct word_ref *ref) {
+struct word_ref next_unfilled_inclusive(const struct solution *sol, const struct word_ref *ref) {
     struct word_ref result = *ref;
     do {
         if (!sol->filled_words[result.num - 1][result.dir]) {
             return result;
         }
         result = next_word(sol->puzzle, &result);
+    } while (result.dir != ref->dir || result.num != ref->num);
+    result.num = 0;
+    return result;
+}
+
+// first unfilled word not before ref
+struct word_ref next_unfilled(const struct solution *sol, const struct word_ref *ref) {
+    const struct word_ref temp = next_word(sol->puzzle, ref);
+    return next_unfilled_inclusive(sol, &temp);
+}
+
+// first unfilled word not before ref
+struct word_ref prev_unfilled(const struct solution *sol, const struct word_ref *ref) {
+    struct word_ref result = *ref;
+    do {
+        result = prev_word(sol->puzzle, &result);
+        if (!sol->filled_words[result.num - 1][result.dir]) {
+            return result;
+        }
     } while (result.dir != ref->dir || result.num != ref->num);
     result.num = 0;
     return result;

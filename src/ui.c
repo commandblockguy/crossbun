@@ -51,12 +51,22 @@ static void cursor_to_word(struct cursor *cursor, const struct solution *sol, co
     }
 }
 
-static void cursor_next_word(struct game_state *state) {
-    // todo
+static void cursor_next_word(struct cursor *cursor, const struct solution *sol) {
+    struct word_ref current = get_cursor_word_ref(sol->puzzle, cursor);
+    struct word_ref new = next_unfilled(sol, &current);
+    if (new.num == 0) {
+        new = next_word(sol->puzzle, &current);
+    }
+    cursor_to_word(cursor, sol, &new);
 }
 
-static void cursor_prev_word(struct game_state *state) {
-    // todo
+static void cursor_prev_word(struct cursor *cursor, const struct solution *sol) {
+    struct word_ref current = get_cursor_word_ref(sol->puzzle, cursor);
+    struct word_ref new = prev_unfilled(sol, &current);
+    if (new.num == 0) {
+        new = prev_word(sol->puzzle, &current);
+    }
+    cursor_to_word(cursor, sol, &new);
 }
 
 // move cursor to the previous non-black square
@@ -98,7 +108,7 @@ static void cursor_advance(struct cursor *cursor, const struct solution *sol) {
         cursor->col >= sol->puzzle->width ||
         SOL_CURSOR_CELL(sol, cursor) == BLACK_CELL) {
         struct word_ref current = get_cursor_word_ref(sol->puzzle, &orig_cursor);
-        struct word_ref new = next_unfilled(sol, &current);
+        struct word_ref new = next_unfilled_inclusive(sol, &current);
         if (new.num == 0) {
             new = next_word(sol->puzzle, &current);
         }
@@ -203,11 +213,11 @@ bool handle_input(struct game_state *state) {
     }
 
     if (has_edge(kb_KeyYequ)) {
-        cursor_prev_word(state);
+        cursor_prev_word(cursor, sol);
     }
 
     if (has_edge(kb_KeyGraph)) {
-        cursor_next_word(state);
+        cursor_next_word(cursor, sol);
     }
 
     for (uint8_t i = 0; i < sizeof letter_map / sizeof letter_map[0]; i++) {

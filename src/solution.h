@@ -15,7 +15,9 @@ void solution_free(struct solution *solution);
 
 void set_cell(struct solution *solution, uint8_t row, uint8_t col, char c);
 
+struct word_ref next_unfilled_inclusive(const struct solution *sol, const struct word_ref *ref);
 struct word_ref next_unfilled(const struct solution *sol, const struct word_ref *ref);
+struct word_ref prev_unfilled(const struct solution *sol, const struct word_ref *ref);
 
 #define SOL_CURSOR_CELL(sol, cursor) ((sol)->cells[(cursor)->row][(cursor)->col])
 

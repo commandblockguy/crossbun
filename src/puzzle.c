@@ -100,3 +100,16 @@ struct word_ref next_word(const struct puzzle *puzzle, const struct word_ref *re
     } while(!get_clue(puzzle, &result));
     return result;
 }
+
+struct word_ref prev_word(const struct puzzle *puzzle, const struct word_ref *ref) {
+    struct word_ref result = *ref;
+    do {
+        if (result.num == 0) {
+            result.dir = !result.dir;
+            result.num = puzzle->num_clue_pairs;
+        } else {
+            result.num--;
+        }
+    } while(!get_clue(puzzle, &result));
+    return result;
+}

@@ -29,9 +29,9 @@ void init_graphics(bool dark_mode) {
     gfx_Begin();
     gfx_SetDrawBuffer();
 
-    gfx_SetPalette(palette_dark, sizeof palette_dark, 0);
-
     // todo: light theme
+    gfx_SetPalette(palette_dark, sizeof palette_dark, 0);
+    gfx_FillScreen(BACKGROUND_COLOR);
 }
 
 // returns the y position of the pixel immediately below the bg rectangle

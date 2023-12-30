@@ -15,14 +15,15 @@
 
 static uint16_t palette_dark[] = {
         [BACKGROUND_COLOR] = gfx_RGBTo1555(53, 53, 53),
+        [HIGHLIGHTED_BACKGROUND_COLOR] = gfx_RGBTo1555(93, 93, 93),
+        [SELECTED_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
+        [HIGHLIGHTED_SELECTED_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(114, 101, 89),
+        [CURSOR_BACKGROUND_COLOR] = gfx_RGBTo1555(118, 76, 39),
+        [HIGHLIGHTED_CURSOR_BACKGROUND_COLOR] = gfx_RGBTo1555(145, 112, 82),
         [BORDER_COLOR] = gfx_RGBTo1555(0, 0, 0),
         [TEXT_COLOR] = gfx_RGBTo1555(208, 208, 208),
         [SOLVED_CLUE_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
         [NUMBER_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
-        [HIGHLIGHTED_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
-        [SELECTED_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
-        [CURSOR_BACKGROUND_COLOR] = gfx_RGBTo1555(118, 76, 39),
-        [REF_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(0, 0, 0),
         [CLUE_PANE_BACKGROUND_COLOR] = gfx_RGBTo1555(34, 34, 34),
         [CLUE_PANE_LABEL_COLOR] = gfx_RGBTo1555(156, 100, 49),
 };
@@ -195,15 +196,13 @@ void draw_game(const struct game_state *state) {
             } else {
                 gfx_Rectangle(base_x + cell_size * col, base_y + cell_size * row, cell_size + 1, cell_size + 1);
                 uint8_t current_clue_num = cursor->dir == ACROSS ? current_cell->clue_a : current_cell->clue_d;
-                if (current_clue_num && current_clue_num == selected_clue_num) {
-                    gfx_SetColor(SELECTED_CLUE_BACKGROUND_COLOR);
-                } else if (puzzle->cells[row][col].highlighted) {
-                    gfx_SetColor(HIGHLIGHTED_BACKGROUND_COLOR);
-                } else {
-                    gfx_SetColor(BACKGROUND_COLOR);
-                }
+                bool highlighted = puzzle->cells[row][col].highlighted;
                 if (cursor->row == row && cursor->col == col) {
-                    gfx_SetColor(CURSOR_BACKGROUND_COLOR);
+                    gfx_SetColor(CURSOR_BACKGROUND_COLOR + highlighted);
+                } else if (current_clue_num && current_clue_num == selected_clue_num) {
+                    gfx_SetColor(SELECTED_CLUE_BACKGROUND_COLOR + highlighted);
+                } else {
+                    gfx_SetColor(BACKGROUND_COLOR + highlighted);
                 }
                 gfx_FillRectangle_NoClip(base_x + cell_size * col + 1, base_y + cell_size * row + 1, cell_size - 1, cell_size - 1);
 

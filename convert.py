@@ -39,6 +39,12 @@ def read_puzzle(filename):
 
 puzzles = [read_puzzle(f) for f in args.puzzles]
 
+for p in puzzles:
+    if not all(c in '-.' for c in p.fill):
+        print(f'error converting "{p.title}"')
+        print('puzzles with initial state are not supported')
+        exit(1)
+
 pool_start = struct.calcsize(header_format) + struct.calcsize(entry_format) * len(puzzles)
 pool = b''
 pool_locs = {}

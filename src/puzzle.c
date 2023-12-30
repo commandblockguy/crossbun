@@ -23,7 +23,6 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
             cell->clue_a = col ? result->cells[row][col - 1].clue_a : 0;
             cell->clue_d = row ? result->cells[row - 1][col].clue_d : 0;
             cell->highlighted = markup && BITARRAY_GET(markup, row * width + col);
-            dbg_printf("%c", cell->highlighted ? '#' : ' ');
             bool is_black = grid[width * row + col] == BLACK_CELL;
             bool is_left_black   = col == 0          || grid[width * row + (col - 1)] == BLACK_CELL;
             bool is_right_black  = col == width - 1  || grid[width * row + (col + 1)] == BLACK_CELL;
@@ -71,7 +70,6 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
                 cell->clue_d = 0;
             }
         }
-        dbg_printf("\n");
     }
     return result;
 error:

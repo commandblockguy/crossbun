@@ -19,6 +19,7 @@ static uint16_t palette_dark[] = {
         [TEXT_COLOR] = gfx_RGBTo1555(208, 208, 208),
         [SOLVED_CLUE_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
         [NUMBER_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
+        [HIGHLIGHTED_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
         [SELECTED_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(79, 62, 47),
         [CURSOR_BACKGROUND_COLOR] = gfx_RGBTo1555(118, 76, 39),
         [REF_CLUE_BACKGROUND_COLOR] = gfx_RGBTo1555(0, 0, 0),
@@ -196,6 +197,8 @@ void draw_game(const struct game_state *state) {
                 uint8_t current_clue_num = cursor->dir == ACROSS ? current_cell->clue_a : current_cell->clue_d;
                 if (current_clue_num && current_clue_num == selected_clue_num) {
                     gfx_SetColor(SELECTED_CLUE_BACKGROUND_COLOR);
+                } else if (puzzle->cells[row][col].highlighted) {
+                    gfx_SetColor(HIGHLIGHTED_BACKGROUND_COLOR);
                 } else {
                     gfx_SetColor(BACKGROUND_COLOR);
                 }

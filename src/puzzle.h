@@ -16,6 +16,7 @@ struct cell {
     uint8_t clue_a; // Across clue number
     uint8_t clue_d; // Down clue number
     uint8_t word_num; // Word number if start of word, 0 otherwise
+    bool highlighted;
 };
 
 enum word_direction : uint8_t {
@@ -49,7 +50,7 @@ struct puzzle {
     struct clue_pair *clues;
 };
 
-struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const char **clues);
+struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const char *clues, const uint8_t *markup);
 
 void puzzle_free(struct puzzle *puzzle);
 

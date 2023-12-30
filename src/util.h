@@ -13,4 +13,6 @@
        __typeof__ (b) _b = (b); \
      _a < _b ? _a : _b; })
 
+#define BITARRAY_GET(arr, n) (((arr)[(n) >> 3] >> (7 - ((n) & 7))) & 1)
+
 #endif //CROSSWORD_UTIL_H

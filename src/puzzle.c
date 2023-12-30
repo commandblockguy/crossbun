@@ -3,7 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const char **clues) {
+#undef NDEBUG
+#include <debug.h>
+
+struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const char *clues, const uint8_t *markup) {
     if (width > MAX_PUZZLE_SIZE || height > MAX_PUZZLE_SIZE) {
         return NULL;
     }
@@ -12,13 +15,15 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
     result->width = width;
     result->height = height;
     result->num_clue_pairs = 0;
-    const char **current_clue = clues;
+    const char *current_clue = clues;
     for (uint8_t row = 0; row < height; row++) {
         for (uint8_t col = 0; col < width; col++) {
             struct cell *cell = &result->cells[row][col];
             cell->content = grid[width * row + col];
             cell->clue_a = col ? result->cells[row][col - 1].clue_a : 0;
             cell->clue_d = row ? result->cells[row - 1][col].clue_d : 0;
+            cell->highlighted = markup && BITARRAY_GET(markup, row * width + col);
+            dbg_printf("%c", cell->highlighted ? '#' : ' ');
             bool is_black = grid[width * row + col] == BLACK_CELL;
             bool is_left_black   = col == 0          || grid[width * row + (col - 1)] == BLACK_CELL;
             bool is_right_black  = col == width - 1  || grid[width * row + (col + 1)] == BLACK_CELL;
@@ -40,7 +45,8 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
                     struct clue *clue = malloc(sizeof *clue);
                     if (clue == NULL) goto error;
                     current_pair->across = clue;
-                    clue->text = *current_clue++;
+                    clue->text = current_clue;
+                    current_clue += strlen(current_clue) + 1;
                     clue->start_col = col;
                     clue->start_row = row;
                     // TODO: parse references
@@ -51,7 +57,8 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
                     struct clue *clue = malloc(sizeof *clue);
                     if (clue == NULL) goto error;
                     current_pair->down = clue;
-                    clue->text = *current_clue++;
+                    clue->text = current_clue;
+                    current_clue += strlen(current_clue) + 1;
                     clue->start_col = col;
                     clue->start_row = row;
                     // TODO: parse references
@@ -64,6 +71,7 @@ struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const
                 cell->clue_d = 0;
             }
         }
+        dbg_printf("\n");
     }
     return result;
 error:

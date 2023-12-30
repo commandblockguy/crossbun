@@ -25,7 +25,7 @@ def zx0_compress(b):
     return p.stdout
 
 def markup_to_bitmap(m):
-    return bitstring.Bits([m == 0x80 for c in m]).tobytes()
+    return bitstring.Bits([c == 0x80 for c in m]).tobytes()
 
 magic = b'CROSS'
 version = 0

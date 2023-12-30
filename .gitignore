@@ -7,3 +7,5 @@ convimg.out
 .venv
 .idea
 *.puz
+.vscode
+*.8xv

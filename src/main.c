@@ -14,6 +14,7 @@
 
 #include "graphics.h"
 #include "ui.h"
+#include "save.h"
 
 
 int main(void)
@@ -22,11 +23,15 @@ int main(void)
 
     struct game_state state = {};
 
-    if (!state_new(&state, "TEST", 0)) goto error;
+    if (!load_save(&state)) {
+        if (!state_new(&state, "TEST", 0)) goto error;
+    }
 
     while (handle_input(&state)) {
         draw_game(&state);
     }
+
+    save_game(&state);
 
 error:
     state_free(&state);

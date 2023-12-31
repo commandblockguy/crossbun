@@ -8,7 +8,7 @@ bool state_new(struct game_state *state, const char *pack_name, uint8_t puz_num)
         return false;
     }
 
-    if (!load_puzzle(&state->unpacked, pack, puz_num)) {
+    if (!load_puzzle(&state->unpacked, pack, pack_name, puz_num)) {
         return false;
     }
 

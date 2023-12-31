@@ -31,6 +31,8 @@ struct puzzle_pack {
 };
 
 struct unpacked_puzzle {
+    char pack_name[9];
+    uint8_t puzzle_num;
     struct puzzle *puzzle;
     char *clues;
 };
@@ -38,7 +40,7 @@ struct unpacked_puzzle {
 struct puzzle_pack *open_pack(const char *filename);
 
 // loads a puzzle - must later be unloaded with unload_puzzle
-bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, uint8_t puzzle_num);
+bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, const char *pack_name, uint8_t puzzle_num);
 
 // unloads a puzzle previously loaded with load_puzzle
 void unload_puzzle(struct unpacked_puzzle *unpacked);

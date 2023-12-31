@@ -3,10 +3,17 @@
 
 #include "puzzle.h"
 
+enum solution_status : uint8_t {
+    INCOMPLETE,
+    INCORRECT,
+    CORRECT,
+};
+
 struct solution {
     const struct puzzle *puzzle;
     char cells[MAX_PUZZLE_SIZE][MAX_PUZZLE_SIZE];
     bool (*filled_words)[2];
+    enum solution_status status;
 };
 
 bool solution_new(struct solution *solution, const struct puzzle *puzzle);

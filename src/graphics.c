@@ -26,6 +26,8 @@ static uint16_t palette_dark[] = {
         [NUMBER_TEXT_COLOR] = gfx_RGBTo1555(137, 137, 137),
         [CLUE_PANE_BACKGROUND_COLOR] = gfx_RGBTo1555(34, 34, 34),
         [CLUE_PANE_LABEL_COLOR] = gfx_RGBTo1555(156, 100, 49),
+        [INCORRECT_TEXT_COLOR] = gfx_RGBTo1555(255, 0, 0),
+        [COMPLETE_TEXT_COLOR] = gfx_RGBTo1555(0, 255, 0),
 };
 
 void init_graphics(bool dark_mode) {
@@ -172,9 +174,6 @@ void draw_game(const struct game_state *state) {
     const struct cursor *cursor = &state->cursor;
     const struct solution *solution = &state->solution;
 
-    // todo: remove
-    gfx_FillScreen(BACKGROUND_COLOR);
-
     int base_x = 0;
     int base_y = 0;
     uint8_t cell_size = min(MAX_GRID_HEIGHT / puzzle->height, MAX_GRID_WIDTH / puzzle->width);
@@ -213,7 +212,7 @@ void draw_game(const struct game_state *state) {
                     gfx_PrintUInt(current_cell->word_num, 0);
                 }
 
-                gfx_SetTextFGColor(TEXT_COLOR);
+                gfx_SetTextFGColor(solution->status == CORRECT ? COMPLETE_TEXT_COLOR : TEXT_COLOR);
                 gfx_SetTextScale(text_scale, text_scale);
 
                 uint8_t letter_offset_x = (cell_size + 2 - (gfx_GetCharWidth(c) - text_scale)) / 2;
@@ -225,6 +224,23 @@ void draw_game(const struct game_state *state) {
         }
     }
     gfx_SetTextScale(1, 1);
+
+    uint8_t status_box_y = base_y + puzzle->height * cell_size + 1;
+    gfx_SetColor(BACKGROUND_COLOR);
+    gfx_FillRectangle_NoClip(0, status_box_y, hint_box_start, GFX_LCD_HEIGHT - status_box_y);
+    gfx_SetTextXY(base_x + 2, status_box_y + 2);
+    switch (solution->status) {
+        case INCOMPLETE:
+            break;
+        case INCORRECT:
+            gfx_SetTextFGColor(INCORRECT_TEXT_COLOR);
+            gfx_PrintString("INCORRECT");
+            break;
+        case CORRECT:
+            gfx_SetTextFGColor(COMPLETE_TEXT_COLOR);
+            gfx_PrintString("COMPLETE!");
+            break;
+    }
 
     gfx_BlitBuffer();
 }

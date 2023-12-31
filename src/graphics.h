@@ -16,6 +16,8 @@ enum colors : uint8_t {
     NUMBER_TEXT_COLOR,
     CLUE_PANE_BACKGROUND_COLOR,
     CLUE_PANE_LABEL_COLOR,
+    INCORRECT_TEXT_COLOR,
+    COMPLETE_TEXT_COLOR,
 };
 
 void init_graphics(bool dark_mode);

@@ -6,6 +6,7 @@
 
 bool solution_new(struct solution *solution, const struct puzzle *puzzle) {
     solution->puzzle = puzzle;
+    solution->status = INCOMPLETE;
     for (uint8_t row = 0; row < puzzle->height; row++) {
         for (uint8_t col = 0; col < puzzle->width; col++) {
             if (puzzle->cells[row][col].content == BLACK_CELL) {
@@ -41,6 +42,22 @@ static bool is_word_filled(struct solution *solution, const struct word_ref *wor
     return true;
 }
 
+static enum solution_status get_new_status(struct solution *solution) {
+    const struct puzzle *puzzle = solution->puzzle;
+    enum solution_status result = CORRECT;
+    for (uint8_t row = 0; row < puzzle->height; row++) {
+        for (uint8_t col = 0; col < puzzle->width; col++) {
+            if (solution->cells[row][col] != puzzle->cells[row][col].content) {
+                if (solution->cells[row][col] == EMPTY_CELL) {
+                    return INCOMPLETE;
+                }
+                result = INCORRECT;
+            }
+        }
+    }
+    return result;
+}
+
 void set_cell(struct solution *solution, uint8_t row, uint8_t col, char c) {
     solution->cells[row][col] = c;
     uint8_t clue_a = solution->puzzle->cells[row][col].clue_a;
@@ -49,6 +66,7 @@ void set_cell(struct solution *solution, uint8_t row, uint8_t col, char c) {
     uint8_t clue_d = solution->puzzle->cells[row][col].clue_d;
     struct word_ref ref_d = {DOWN, clue_d};
     solution->filled_words[clue_d - 1][DOWN] = is_word_filled(solution, &ref_d);
+    solution->status = get_new_status(solution);
 }
 
 // first unfilled word not before ref

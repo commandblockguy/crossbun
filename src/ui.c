@@ -223,16 +223,18 @@ bool handle_input(struct game_state *state) {
         cursor_next_word(cursor, sol);
     }
 
-    for (uint8_t i = 0; i < sizeof letter_map / sizeof letter_map[0]; i++) {
-        if (has_edge(letter_map[i])) {
-            set_cell(&state->solution, cursor->row, cursor->col, i + 'A');
-            cursor_advance(cursor, &state->solution);
+    if (state->solution.status != CORRECT) {
+        for (uint8_t i = 0; i < sizeof letter_map / sizeof letter_map[0]; i++) {
+            if (has_edge(letter_map[i])) {
+                set_cell(&state->solution, cursor->row, cursor->col, i + 'A');
+                cursor_advance(cursor, &state->solution);
+            }
         }
-    }
 
-    if (has_edge(kb_KeyDel)) {
-        set_cell(&state->solution, cursor->row, cursor->col, EMPTY_CELL);
-        cursor_prev_square(cursor, &state->solution);
+        if (has_edge(kb_KeyDel)) {
+            set_cell(&state->solution, cursor->row, cursor->col, EMPTY_CELL);
+            cursor_prev_square(cursor, &state->solution);
+        }
     }
 
     // todo: remove

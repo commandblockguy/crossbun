@@ -29,7 +29,7 @@ struct word_ref get_cursor_word_ref(const struct puzzle *puzzle, const struct cu
     return result;
 }
 
-static void cursor_to_word(struct cursor *cursor, const struct solution *sol, const struct word_ref *word_ref) {
+void cursor_to_word(struct cursor *cursor, const struct solution *sol, const struct word_ref *word_ref) {
     const struct clue *clue = get_clue(sol->puzzle, word_ref);
     if (!clue) return;
 

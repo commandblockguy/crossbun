@@ -44,6 +44,9 @@ int main(void)
         goto error;
     }
 
+    struct word_ref first = first_word(state.solution.puzzle);
+    cursor_to_word(&state.cursor, &state.solution, &first);
+
     while (handle_input(&state)) {
         draw_game(&state);
     }

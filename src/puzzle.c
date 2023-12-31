@@ -120,3 +120,11 @@ struct word_ref prev_word(const struct puzzle *puzzle, const struct word_ref *re
     } while(!get_clue(puzzle, &result));
     return result;
 }
+
+struct word_ref first_word(const struct puzzle *puzzle) {
+    struct word_ref zero_across = {
+            .dir = ACROSS,
+            .num = 0,
+    };
+    return next_word(puzzle, &zero_across);
+}

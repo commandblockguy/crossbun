@@ -31,7 +31,9 @@ int main(void)
         draw_game(&state);
     }
 
-    save_game(&state);
+    if (state.solution.status != CORRECT) {
+        save_game(&state);
+    }
 
 error:
     state_free(&state);

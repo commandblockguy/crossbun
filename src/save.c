@@ -53,5 +53,7 @@ bool load_save(struct game_state *state) {
 
     state->cursor = save->cursor;
 
+    os_DelAppVar(SAVE_FILENAME);
+
     return true;
 }

@@ -104,7 +104,7 @@ static void cursor_advance(struct cursor *cursor, const struct solution *sol) {
     }
 }
 
-bool handle_input(struct game_state *state) {
+enum input_command handle_input(struct game_state *state) {
     struct cursor *cursor = &state->cursor;
     struct puzzle *puzzle = state->puzzle;
     struct solution *sol = &state->solution;
@@ -112,7 +112,11 @@ bool handle_input(struct game_state *state) {
     keypad_scan();
 
     if (keypad_has_edge(kb_KeyClear)) {
-        return false;
+        return EXIT;
+    }
+
+    if (keypad_has_edge(kb_KeyMode)) {
+        return EXIT_NOSAVE;
     }
 
     if (keypad_has_edge(kb_Key2nd)) {
@@ -192,5 +196,5 @@ bool handle_input(struct game_state *state) {
         }
     }
 
-    return true;
+    return NONE;
 }

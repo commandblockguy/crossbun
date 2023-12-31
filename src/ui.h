@@ -5,7 +5,13 @@
 
 #include "state.h"
 
-bool handle_input(struct game_state *state);
+enum input_command : uint8_t {
+    NONE,
+    EXIT,
+    EXIT_NOSAVE,
+};
+
+enum input_command handle_input(struct game_state *state);
 
 void cursor_to_word(struct cursor *cursor, const struct solution *sol, const struct word_ref *word_ref);
 

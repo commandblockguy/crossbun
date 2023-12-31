@@ -28,11 +28,13 @@ int main(void)
         if (!select_puzzle(&state)) goto error;
     }
 
-    while (handle_input(&state)) {
+    enum input_command cmd;
+
+    while ((cmd = handle_input(&state)) == NONE) {
         draw_game(&state);
     }
 
-    if (state.solution.status != CORRECT) {
+    if (cmd != EXIT_NOSAVE && state.solution.status != CORRECT) {
         save_game(&state);
     }
 

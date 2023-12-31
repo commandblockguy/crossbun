@@ -6,8 +6,7 @@ NAME = CROSSBUN
 ICON = icon.png
 DESCRIPTION = "Crossword Game"
 COMPRESSED = YES
-ARCHIVED = NO
-LTO = NO
+ARCHIVED = YES
 
 CFLAGS = -Wall -Wextra -Oz
 CXXFLAGS = -Wall -Wextra -Oz

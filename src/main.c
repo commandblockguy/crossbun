@@ -9,13 +9,10 @@
 
 #include <graphx.h>
 #include <ti/getcsc.h>
-#undef NDEBUG
-#include <debug.h>
 
 #include "graphics.h"
 #include "ui.h"
 #include "save.h"
-#include "menu.h"
 #include "puzzle_select.h"
 
 int main(void)

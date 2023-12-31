@@ -2,8 +2,7 @@
 
 #include <fileioc.h>
 #include <string.h>
-#undef NDEBUG
-#include <debug.h>
+
 #include "menu.h"
 #include "graphics.h"
 

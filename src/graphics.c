@@ -1,8 +1,6 @@
 #include "graphics.h"
 
 #include <graphx.h>
-#undef NDEBUG
-#include <debug.h>
 
 #include "state.h"
 

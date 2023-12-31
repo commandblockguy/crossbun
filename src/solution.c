@@ -1,8 +1,6 @@
 #include "solution.h"
 
 #include <stdlib.h>
-#undef NDEBUG
-#include <debug.h>
 
 bool solution_new(struct solution *solution, const struct puzzle *puzzle) {
     solution->puzzle = puzzle;

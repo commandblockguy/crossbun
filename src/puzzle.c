@@ -3,9 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#undef NDEBUG
-#include <debug.h>
-
 struct puzzle *puzzle_new(uint8_t width, uint8_t height, const char *grid, const char *clues, const uint8_t *markup) {
     if (width > MAX_PUZZLE_SIZE || height > MAX_PUZZLE_SIZE) {
         return NULL;

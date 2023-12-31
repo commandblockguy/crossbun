@@ -1,8 +1,6 @@
 #include "ui.h"
 
 #include <keypadc.h>
-#undef NDEBUG
-#include <debug.h>
 
 #include "state.h"
 #include "keypad.h"

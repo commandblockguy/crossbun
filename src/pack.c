@@ -5,8 +5,6 @@
 #include <ti/vars.h>
 #include <stdlib.h>
 
-#undef NDEBUG
-#include <debug.h>
 
 #include "puzzle.h"
 

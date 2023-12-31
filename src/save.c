@@ -46,7 +46,9 @@ bool load_save(struct game_state *state) {
     uint8_t height = state->puzzle->height;
     uint8_t width = state->puzzle->width;
     for (uint8_t row = 0; row < height; row++) {
-        memcpy(state->solution.cells[row], &save->cells[width * row], width);
+        for (uint8_t col = 0; col < width; col++) {
+            set_cell(&state->solution, row, col, save->cells[width * row + col]);
+        }
     }
 
     state->cursor = save->cursor;

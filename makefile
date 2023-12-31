@@ -2,10 +2,10 @@
 # Makefile Options
 # ----------------------------
 
-NAME = DEMO
+NAME = CROSSBUN
 ICON = icon.png
-DESCRIPTION = "CE C Toolchain Demo"
-COMPRESSED = NO
+DESCRIPTION = "Crossword Game"
+COMPRESSED = YES
 ARCHIVED = NO
 LTO = NO
 

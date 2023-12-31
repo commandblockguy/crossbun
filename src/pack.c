@@ -34,11 +34,9 @@ struct puzzle_pack *open_pack(const char *filename) {
 
 #define PTR(offset) (((void*)(pack)) + offset)
 
-struct unpacked_puzzle load_puzzle(const struct puzzle_pack *pack, uint8_t puzzle_num) {
-    struct unpacked_puzzle result = {
-        .puzzle = NULL,
-        .clues = NULL,
-    };
+bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, uint8_t puzzle_num) {
+    result->puzzle = NULL;
+    result->clues = NULL;
     char *grid = NULL;
     uint8_t *markup = NULL;
 
@@ -52,9 +50,9 @@ struct unpacked_puzzle load_puzzle(const struct puzzle_pack *pack, uint8_t puzzl
     if (!grid) goto error;
     zx0_Decompress(grid, PTR(entry->solution_offset));
 
-    result.clues = malloc(entry->total_clue_length);
-    if (!result.clues) goto error;
-    zx0_Decompress(result.clues, PTR(entry->clues_offset));
+    result->clues = malloc(entry->total_clue_length);
+    if (!result->clues) goto error;
+    zx0_Decompress(result->clues, PTR(entry->clues_offset));
 
     if (entry->markup_offset) {
         markup = malloc(CEIL_DIV(entry->width * entry->height, 8));
@@ -62,23 +60,23 @@ struct unpacked_puzzle load_puzzle(const struct puzzle_pack *pack, uint8_t puzzl
         zx0_Decompress(markup, PTR(entry->markup_offset));
     }
 
-    result.puzzle = puzzle_new(entry->width, entry->height, grid, result.clues, markup);
-    if (!result.puzzle) goto error;
+    result->puzzle = puzzle_new(entry->width, entry->height, grid, result->clues, markup);
+    if (!result->puzzle) goto error;
 
     free(markup);
     free(grid);
 
-    return result;
+    return true;
 
 error:
-    puzzle_free(result.puzzle);
-    free(result.clues);
+    puzzle_free(result->puzzle);
+    free(result->clues);
     free(grid);
     free(markup);
 
-    result.puzzle = NULL;
-    result.clues = NULL;
-    return result;
+    result->puzzle = NULL;
+    result->clues = NULL;
+    return false;
 }
 
 void unload_puzzle(struct unpacked_puzzle *unpacked) {

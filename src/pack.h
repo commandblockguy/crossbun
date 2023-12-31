@@ -2,6 +2,7 @@
 #define CROSSWORD_PACK_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define PACK_MAGIC "CROSS"
 #define CURRENT_VERSION 0
@@ -37,7 +38,7 @@ struct unpacked_puzzle {
 struct puzzle_pack *open_pack(const char *filename);
 
 // loads a puzzle - must later be unloaded with unload_puzzle
-struct unpacked_puzzle load_puzzle(const struct puzzle_pack *pack, uint8_t puzzle_num);
+bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, uint8_t puzzle_num);
 
 // unloads a puzzle previously loaded with load_puzzle
 void unload_puzzle(struct unpacked_puzzle *unpacked);

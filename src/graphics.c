@@ -40,7 +40,7 @@ void init_graphics(bool dark_mode) {
 }
 
 // returns the y position of the pixel immediately below the bg rectangle
-static int word_wrap_box(const char *text, int base_x, int base_y, int width, int indent_x) {
+int word_wrap_box(const char *text, int base_x, int base_y, int width, int indent_x) {
     int y = base_y;
     const char *cur_word = text;
     int x = indent_x;

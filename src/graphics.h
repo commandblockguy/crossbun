@@ -24,4 +24,6 @@ void init_graphics(bool dark_mode);
 
 void draw_game(const struct game_state *state);
 
+int word_wrap_box(const char *text, int base_x, int base_y, int width, int indent_x);
+
 #endif //CROSSWORD_GRAPHICS_H

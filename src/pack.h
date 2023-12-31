@@ -45,4 +45,6 @@ bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack,
 // unloads a puzzle previously loaded with load_puzzle
 void unload_puzzle(struct unpacked_puzzle *unpacked);
 
+#define PACK_OFFSET(pack, offset) (((void*)(pack)) + offset)
+
 #endif

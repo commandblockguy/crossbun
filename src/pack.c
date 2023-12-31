@@ -32,8 +32,6 @@ struct puzzle_pack *open_pack(const char *filename) {
     return pack;
 }
 
-#define PTR(offset) (((void*)(pack)) + offset)
-
 bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, const char *pack_name, uint8_t puzzle_num) {
     strncpy(result->pack_name, pack_name, 9);
     result->puzzle = NULL;
@@ -49,16 +47,16 @@ bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack,
 
     grid = malloc(entry->width * entry->height);
     if (!grid) goto error;
-    zx0_Decompress(grid, PTR(entry->solution_offset));
+    zx0_Decompress(grid, PACK_OFFSET(pack, entry->solution_offset));
 
     result->clues = malloc(entry->total_clue_length);
     if (!result->clues) goto error;
-    zx0_Decompress(result->clues, PTR(entry->clues_offset));
+    zx0_Decompress(result->clues, PACK_OFFSET(pack, entry->clues_offset));
 
     if (entry->markup_offset) {
         markup = malloc(CEIL_DIV(entry->width * entry->height, 8));
         if (!markup) goto error;
-        zx0_Decompress(markup, PTR(entry->markup_offset));
+        zx0_Decompress(markup, PACK_OFFSET(pack, entry->markup_offset));
     }
 
     result->puzzle = puzzle_new(entry->width, entry->height, grid, result->clues, markup);

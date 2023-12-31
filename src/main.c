@@ -16,32 +16,16 @@
 #include "ui.h"
 #include "save.h"
 #include "menu.h"
-
-void test_hover(void *handle) {
-    gfx_PrintStringXY(handle, MENU_DIVIDER_X + 25, 100);
-}
-
-int test_select(void *handle) {
-    char *c = handle;
-    return *c == 't';
-}
-
-struct menu_entry test_entries[] = {
-        {"asdf", "option 1"},
-        {"hjkl", "option 2"},
-        {"tomato", "tomato"},
-};
+#include "puzzle_select.h"
 
 int main(void)
 {
     init_graphics(true);
 
-    menu(3, test_entries, "No puzzle packs found!", test_hover, test_select);
-
     struct game_state state = {};
 
     if (!load_save(&state)) {
-        if (!state_new(&state, "TEST", 0)) goto error;
+        if (!select_puzzle(&state)) goto error;
     }
 
     while (handle_input(&state)) {

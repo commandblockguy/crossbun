@@ -8,7 +8,7 @@
 #define MENU_BASE_X 40
 #define TITLE "CROSSBUN"
 
-int menu(uint24_t num_entries, const struct menu_entry *entries, const char *empty_msg, menu_hover_callback_t hover_callback, menu_select_callback_t select_callback) {
+int menu(uint24_t num_entries, const struct menu_entry *entries, const char *empty_msg, menu_hover_callback_t hover_callback, menu_select_callback_t select_callback, void *data) {
     uint24_t selection = 0;
     gfx_FillScreen(CLUE_PANE_BACKGROUND_COLOR);
 
@@ -48,7 +48,7 @@ int menu(uint24_t num_entries, const struct menu_entry *entries, const char *emp
         }
 
         if (keypad_has_edge(kb_Key2nd) || keypad_has_edge(kb_KeyEnter)) {
-            int result = select_callback(entries[selection].handle);
+            int result = select_callback(&entries[selection], data);
             if (result) {
                 return result;
             }
@@ -68,7 +68,7 @@ int menu(uint24_t num_entries, const struct menu_entry *entries, const char *emp
 
         gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
         gfx_FillRectangle_NoClip(MENU_DIVIDER_X, 0, GFX_LCD_WIDTH - MENU_DIVIDER_X, GFX_LCD_HEIGHT);
-        hover_callback(entries[selection].handle);
+        hover_callback(&entries[selection], data);
 
         gfx_BlitBuffer();
     }

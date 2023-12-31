@@ -102,17 +102,20 @@ static void cursor_advance(struct cursor *cursor, const struct solution *sol) {
     struct cursor orig_cursor = *cursor;
     uint8_t dx = cursor->dir == ACROSS;
     uint8_t dy = cursor->dir == DOWN;
-    cursor->row += dy;
-    cursor->col += dx;
-    if (cursor->row >= sol->puzzle->height ||
-        cursor->col >= sol->puzzle->width ||
-        SOL_CURSOR_CELL(sol, cursor) == BLACK_CELL) {
-        struct word_ref current = get_cursor_word_ref(sol->puzzle, &orig_cursor);
-        struct word_ref new = next_unfilled_inclusive(sol, &current);
-        if (new.num == 0) {
-            new = next_word(sol->puzzle, &current);
+    while (SOL_CURSOR_CELL(sol, cursor) != EMPTY_CELL) {
+        cursor->row += dy;
+        cursor->col += dx;
+        if (cursor->row >= sol->puzzle->height ||
+            cursor->col >= sol->puzzle->width ||
+            SOL_CURSOR_CELL(sol, cursor) == BLACK_CELL) {
+            struct word_ref current = get_cursor_word_ref(sol->puzzle, &orig_cursor);
+            struct word_ref new = next_unfilled_inclusive(sol, &current);
+            if (new.num == 0) {
+                new = next_word(sol->puzzle, &current);
+            }
+            cursor_to_word(cursor, sol, &new);
+            break;
         }
-        cursor_to_word(cursor, sol, &new);
     }
 }
 

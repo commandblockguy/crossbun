@@ -9,6 +9,8 @@
 
 #include <graphx.h>
 #include <ti/getcsc.h>
+#undef NDEBUG
+#include <debug.h>
 
 #include "puzzle.h"
 #include "graphics.h"
@@ -26,12 +28,14 @@ int main(void)
                     .col = 0,
                     .dir = ACROSS,
             },
+            .solution = {},
     };
+    struct unpacked_puzzle unpacked = {};
 
     struct puzzle_pack *pack = open_pack("TEST");
     if (!pack) goto error;
 
-    struct unpacked_puzzle unpacked = load_puzzle(pack, 0);
+    unpacked = load_puzzle(pack, 0);
     if (!unpacked.puzzle) goto error;
 
     state.puzzle = unpacked.puzzle;

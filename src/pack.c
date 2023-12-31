@@ -13,6 +13,10 @@
 struct puzzle_pack *open_pack(const char *filename) {
     var_t *var = os_GetAppVarData(filename, NULL);
 
+    if (var == NULL) {
+        return NULL;
+    }
+
     if (var->size < sizeof (struct puzzle_pack)) {
         return NULL;
     }

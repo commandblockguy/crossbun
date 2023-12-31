@@ -7,8 +7,8 @@ import pathlib
 from tivars.types import TIAppVar
 
 parser = argparse.ArgumentParser(
-                    prog='convert.py',
-                    description='Converts .puz files into Crossbun .8xv puzzle packs')
+    prog='convert.py',
+    description='Converts .puz files into Crossbun .8xv puzzle packs')
 parser.add_argument('puzzles', metavar='file', type=str, nargs='+',
                     help='a .puz file')
 parser.add_argument('output', type=str, help='output appvar file')
@@ -18,14 +18,17 @@ parser.add_argument('-n', '--varname', help='appvar name')
 
 args = parser.parse_args()
 
+
 def zx0_compress(b):
     cmd = ['convbin', '-i', '/dev/stdin', '-o', '/dev/stdout', '-j', 'bin', '-k', 'bin', '-l', '0', '-c', 'zx0']
     p = subprocess.run(cmd, capture_output=True, input=b)
     if p.returncode != 0: raise RuntimeError('convbin failed')
     return p.stdout
 
+
 def markup_to_bitmap(m):
     return bitstring.Bits([c == 0x80 for c in m]).tobytes()
+
 
 magic = b'CROSS'
 version = 0
@@ -33,13 +36,23 @@ version = 0
 header_format = '<5sBHHB'
 entry_format = '<HHHHBBHBHHH'
 
+
 def read_puzzle(filename):
     with open(filename, 'rb') as f:
         return puz.load(f.read())
 
+
 puzzles = [read_puzzle(f) for f in args.puzzles]
 
 for p in puzzles:
+    if p.width > 15 or p.height > 15:
+        print(f'error converting "{p.title}"')
+        print('maximum size is 15x15')
+        exit(1)
+    if p.has_rebus():
+        print(f'error converting "{p.title}"')
+        print('puzzles with rebus are not supported')
+        exit(1)
     if not all(c in '-.' for c in p.fill):
         print(f'error converting "{p.title}"')
         print('puzzles with initial state are not supported')
@@ -49,7 +62,8 @@ pool_start = struct.calcsize(header_format) + struct.calcsize(entry_format) * le
 pool = b''
 pool_locs = {}
 
-def pool_add(s):
+
+def pool_add(s: bytes | str):
     global pool
     offset = len(pool)
     b = s.encode('ascii') + b'\0' if isinstance(s, str) else s
@@ -78,7 +92,7 @@ entries = [
         pool_add(zx0_compress(clue_data)),
         pool_add(zx0_compress(markup_to_bitmap(p.markup().markup))) if p.has_markup() else 0,
     ) for p in puzzles
-        for clue_data in [bytes(b for c in p.clues for b in c.encode('ascii') + b'\0')]
+    for clue_data in [bytes(b for c in p.clues for b in c.encode('ascii') + b'\0')]
 ]
 
 if args.varname is None:

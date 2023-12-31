@@ -237,22 +237,5 @@ bool handle_input(struct game_state *state) {
         }
     }
 
-    // todo: remove
-    if (has_edge(kb_Key0)) {
-        puzzle->width--;
-    }
-
-    if (has_edge(kb_KeyChs)) {
-        puzzle->width++;
-    }
-
-    if (has_edge(kb_KeyGraphVar)) {
-        puzzle->height--;
-    }
-
-    if (has_edge(kb_KeyStat)) {
-        puzzle->height++;
-    }
-
     return true;
 }

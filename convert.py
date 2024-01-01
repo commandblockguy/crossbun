@@ -10,7 +10,7 @@ from tivars.types import TIAppVar
 
 parser = argparse.ArgumentParser(
     prog='convert.py',
-    description='Converts .puz files into Crossbun .8xv puzzle packs')
+    description='Converts .puz files into CrossBun .8xv puzzle packs')
 parser.add_argument('puzzles', metavar='file', type=str, nargs='+',
                     help='a .puz file')
 parser.add_argument('output', type=str, help='output appvar file')

@@ -32,6 +32,7 @@ struct puzzle_pack *open_pack(const char *filename) {
 
 bool load_puzzle(struct unpacked_puzzle *result, const struct puzzle_pack *pack, const char *pack_name, uint8_t puzzle_num) {
     strncpy(result->pack_name, pack_name, 9);
+    result->puzzle_num = puzzle_num;
     result->puzzle = NULL;
     result->clues = NULL;
     char *grid = NULL;

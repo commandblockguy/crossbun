@@ -2,6 +2,8 @@
 
 CrossBun is a crossword puzzle program for the TI-84 Plus CE graphing calculator. It's heavily inspired by [Crosshare](https://crosshare.org/).
 
+![An animated screenshot showing CrossBun in action.](screenshot.png)
+
 ## Installation
 To install, transfer `CROSSBUN.8xp` and [clibs.8xg from this repo](https://github.com/CE-Programming/libraries/releases/latest) to the calculator using TI-Connect CE or TiLP.
 On newer calculators (OS 5.5 and above), you'll need to use [arTIfiCE](https://yvantt.github.io/arTIfiCE/) and optionally a shell like [Cesium](https://github.com/mateoconlechuga/cesium/releases) to run the program.

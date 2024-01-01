@@ -1,3 +1,5 @@
+#!/bin/env python
+
 import puz
 import struct
 import subprocess

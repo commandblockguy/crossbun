@@ -1,0 +1,916 @@
+convfont
+Height: 8
+Default width: 4
+
+Font data:
+Codepoint: 'A'
+Data:
+
+
+***
+* *
+***
+* *
+* *
+
+Codepoint: 'B'
+Data:
+
+
+**
+* *
+***
+* *
+***
+
+Codepoint: 'C'
+Data:
+
+
+ **
+*
+*
+*
+ **
+
+Codepoint: 'D'
+Data:
+
+
+**
+* *
+* *
+* *
+**
+
+Codepoint: 'E'
+Data:
+
+
+***
+*
+**
+*
+***
+
+Codepoint: 'F'
+Data:
+
+
+***
+*
+**
+*
+*
+
+Codepoint: 'G'
+Data:
+
+
+ **
+*
+* *
+* *
+ **
+
+Codepoint: 'H'
+Data:
+
+
+* *
+* *
+***
+* *
+* *
+
+Codepoint: 'I'
+Data:
+
+
+***
+ *
+ *
+ *
+***
+
+Codepoint: 'J'
+Data:
+
+
+***
+ *
+ *
+ *
+**
+
+Codepoint: 'K'
+Data:
+
+
+* *
+* *
+**
+* *
+* *
+
+Codepoint: 'L'
+Data:
+
+
+*
+*
+*
+*
+***
+
+Codepoint: 'M'
+Width: 6
+Data:
+
+
+*   *
+** **
+* * *
+*   *
+*   *
+
+Codepoint: 'N'
+Width: 5
+Data:
+
+
+*  *
+** *
+****
+* **
+*  *
+
+Codepoint: 'O'
+Data:
+
+
+***
+* *
+* *
+* *
+***
+
+Codepoint: 'P'
+Data:
+
+
+**
+* *
+**
+*
+*
+
+Codepoint: 'Q'
+Data:
+
+
+***
+* *
+* *
+* *
+**
+  *
+Codepoint: 'R'
+Data:
+
+
+**
+* *
+**
+* *
+* *
+
+Codepoint: 'S'
+Data:
+
+
+***
+*
+***
+  *
+***
+
+Codepoint: 'T'
+Data:
+
+
+***
+ *
+ *
+ *
+ *
+
+Codepoint: 'U'
+Data:
+
+
+* *
+* *
+* *
+* *
+***
+
+Codepoint: 'V'
+Data:
+
+
+* *
+* *
+* *
+* *
+ *
+
+Codepoint: 'W'
+Width: 6
+Data:
+
+
+*   *
+*   *
+* * *
+* * *
+ * *
+
+Codepoint: 'X'
+Data:
+
+
+* *
+* *
+ *
+* *
+* *
+
+Codepoint: 'Y'
+Data:
+
+
+* *
+* *
+ *
+ *
+ *
+
+Codepoint: 'Z'
+Data:
+
+
+***
+  *
+ *
+*
+***
+
+Codepoint: 'a'
+Data:
+
+
+
+***
+  *
+***
+***
+
+Codepoint: 'b'
+Data:
+
+*
+*
+***
+* *
+* *
+***
+
+Codepoint: 'c'
+Data:
+
+
+
+***
+*
+*
+***
+
+Codepoint: 'd'
+Data:
+
+  *
+  *
+***
+* *
+* *
+***
+
+Codepoint: 'e'
+Data:
+
+
+
+***
+***
+*
+***
+
+Codepoint: 'f'
+Width: 3
+Data:
+
+ *
+*
+**
+*
+*
+*
+
+Codepoint: 'g'
+Data:
+
+
+
+***
+* *
+***
+  *
+***
+Codepoint: 'h'
+Data:
+
+*
+*
+***
+* *
+* *
+* *
+
+Codepoint: 'i'
+Width: 2
+Data:
+
+*
+
+*
+*
+*
+*
+
+Codepoint: 'j'
+Width: 3
+Data:
+
+ *
+
+ *
+ *
+ *
+ *
+**
+Codepoint: 'k'
+Data:
+
+*
+*
+* *
+**
+**
+* *
+
+Codepoint: 'l'
+Width: 2
+Data:
+
+*
+*
+*
+*
+*
+*
+
+Codepoint: 'm'
+Width: 6
+Data:
+
+
+
+****
+* * *
+* * *
+* * *
+
+Codepoint: 'n'
+Data:
+
+
+
+**
+* *
+* *
+* *
+
+Codepoint: 'o'
+Data:
+
+
+
+***
+* *
+* *
+***
+
+Codepoint: 'p'
+Data:
+
+
+
+***
+* *
+***
+*
+*
+Codepoint: 'q'
+Data:
+
+
+
+***
+* *
+***
+  *
+  *
+Codepoint: 'r'
+Data:
+
+
+
+***
+*
+*
+*
+
+Codepoint: 's'
+Data:
+
+
+
+***
+*
+  *
+***
+
+Codepoint: 't'
+Data:
+
+ *
+ *
+***
+ *
+ *
+ *
+
+Codepoint: 'u'
+Data:
+
+
+
+* *
+* *
+* *
+***
+
+Codepoint: 'v'
+Data:
+
+
+
+* *
+* *
+* *
+ *
+
+Codepoint: 'w'
+Width: 6
+Data:
+
+
+
+*   *
+*   *
+* * *
+*****
+
+Codepoint: 'x'
+Data:
+
+
+
+* *
+ *
+ *
+* *
+
+Codepoint: 'y'
+Data:
+
+
+
+* *
+* *
+***
+  *
+***
+Codepoint: 'z'
+Data:
+
+
+
+***
+  *
+*
+***
+
+Codepoint: '['
+Data:
+
+**
+*
+*
+*
+*
+*
+**
+Codepoint: '\\'
+Data:
+
+*
+*
+ *
+ *
+ *
+  *
+  *
+Codepoint: ']'
+Data:
+
+ **
+  *
+  *
+  *
+  *
+  *
+ **
+Codepoint: '^'
+Data:
+ *
+* *
+  
+ 
+ 
+ 
+
+
+Codepoint: '_'
+Data:
+
+
+
+
+
+
+***
+
+Codepoint: '`'
+Data:
+ *
+  *
+
+
+
+
+
+
+Codepoint: '!'
+Data:
+
+ *
+ *
+ *
+ *
+
+ *
+
+Codepoint: '\"'
+Data:
+* *
+* *
+
+
+
+
+
+
+Codepoint: '#'
+Data:
+
+ **
+****
+ **
+ **
+****
+ **
+
+Codepoint: '$'
+Data:
+
+ *
+***
+**
+***
+ **
+***
+ *
+Codepoint: '%'
+Data:
+
+* *
+  *
+ *
+ *
+ *
+*
+*  *
+Codepoint: '&'
+Data:
+
+ *
+* *
+ *
+* *
+* *
+** *
+
+Codepoint: '\''
+Width: 2
+Data:
+*
+*
+
+
+
+
+
+
+Codepoint: '('
+Data:
+
+  *
+ *
+*
+*
+*
+ *
+  *
+Codepoint: ')'
+Data:
+
+*
+ *
+  *
+  *
+  *
+ *
+*
+Codepoint: '*'
+Data:
+ *
+***
+ *
+* *
+
+
+
+
+Codepoint: '+'
+Data:
+
+
+
+ *
+***
+ *
+
+
+Codepoint: ','
+Data:
+
+
+
+
+
+
+ *
+*
+Codepoint: '-'
+Data:
+
+
+
+
+***
+
+
+
+Codepoint: '.'
+Data:
+
+
+
+
+
+
+ *
+
+Codepoint: '/'
+Data:
+
+  *
+  *
+ *
+ *
+ *
+*
+*
+Codepoint: '0'
+Data:
+
+
+***
+* *
+* *
+* *
+***
+
+Codepoint: '1'
+Data:
+
+
+ *
+**
+ *
+ *
+***
+
+Codepoint: '2'
+Data:
+
+
+***
+  *
+***
+*
+***
+
+Codepoint: '3'
+Data:
+
+
+***
+  *
+ **
+  *
+***
+
+Codepoint: '4'
+Data:
+
+
+* *
+* *
+***
+  *
+  *
+
+Codepoint: '5'
+Data:
+
+
+***
+*
+**
+  *
+**
+
+Codepoint: '6'
+Data:
+
+
+***
+*
+***
+* *
+***
+
+Codepoint: '7'
+Data:
+
+
+***
+  *
+  *
+  *
+  *
+
+Codepoint: '8'
+Data:
+
+
+***
+* *
+***
+* *
+***
+
+Codepoint: '9'
+Data:
+
+
+***
+* *
+***
+  *
+  *
+
+Codepoint: ':'
+Data:
+
+
+
+ *
+ 
+
+ *
+
+Codepoint: ';'
+Data:
+
+
+
+ *
+ 
+
+ *
+*
+Codepoint: '<'
+Data:
+
+
+  *
+ *
+*
+ *
+  *
+
+Codepoint: '='
+Data:
+
+
+
+***
+
+***
+
+
+Codepoint: '>'
+Data:
+
+
+*
+ *
+  *
+ *
+*
+
+Codepoint: '?'
+Data:
+
+***
+  *
+ **
+ *
+
+ *
+
+Codepoint: '@'
+Data:
+
+***
+* *
+* *
+* *
+*
+***
+
+

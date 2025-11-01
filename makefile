@@ -14,3 +14,6 @@ CXXFLAGS = -Wall -Wextra -Oz
 # ----------------------------
 
 include $(shell cedev-config --makefile)
+
+font: $(SRCDIR)/font.txt
+	convfont -o c -t $(SRCDIR)/font.txt $(SRCDIR)/font.inc

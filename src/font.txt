@@ -27,11 +27,11 @@ Codepoint: 'C'
 Data:
 
 
- **
+***
 *
 *
 *
- **
+***
 
 Codepoint: 'D'
 Data:
@@ -41,7 +41,7 @@ Data:
 * *
 * *
 * *
-**
+***
 
 Codepoint: 'E'
 Data:
@@ -67,11 +67,11 @@ Codepoint: 'G'
 Data:
 
 
- **
+***
 *
 * *
 * *
- **
+***
 
 Codepoint: 'H'
 Data:
@@ -161,7 +161,7 @@ Data:
 
 **
 * *
-**
+***
 *
 *
 
@@ -613,14 +613,15 @@ Data:
 
 
 Codepoint: '#'
+Width: 6
 Data:
 
- **
-****
- **
- **
-****
- **
+ * *
+*****
+ * *
+ * *
+*****
+ * *
 
 Codepoint: '$'
 Data:
@@ -704,6 +705,7 @@ Data:
 
 
 Codepoint: ','
+Width: 3
 Data:
 
 
@@ -724,6 +726,7 @@ Data:
 
 
 Codepoint: '.'
+Width: 2
 Data:
 
 
@@ -731,7 +734,7 @@ Data:
 
 
 
- *
+*
 
 Codepoint: '/'
 Data:
@@ -844,16 +847,18 @@ Data:
   *
 
 Codepoint: ':'
+Width: 2
 Data:
 
 
 
- *
+*
  
 
- *
+*
 
 Codepoint: ';'
+Width: 3
 Data:
 
 

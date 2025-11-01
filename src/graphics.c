@@ -51,7 +51,7 @@ void init_graphics(bool dark_mode) {
 }
 
 // returns the y position of the pixel immediately below the bg rectangle
-int word_wrap_box(const char *text, int base_x, int base_y, int width, int indent_x) {
+int word_wrap_box_condensed(const char *text, int base_x, int base_y, int width, int indent_x) {
     int y = base_y;
     const char *cur_word = text;
     int x = indent_x;
@@ -97,6 +97,69 @@ move_to_next_line:
             }
             gfx_FillRectangle(base_x, y, width, LINE_SPACING);
             continue;
+        }
+    }
+    y += LINE_SPACING;
+done:
+    gfx_FillRectangle(base_x, y, width, 2);
+    y += 2;
+    return y;
+}
+
+// returns the y position of the pixel immediately below the bg rectangle
+int word_wrap_box(const char *text, int base_x, int base_y, int width, int indent_x) {
+    int y = base_y;
+    const char *cur_word = text;
+    int x = indent_x;
+    int word_width = 0;
+    int hyphen_length = gfx_GetCharWidth('-');
+    if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
+        goto done;
+    }
+    gfx_FillRectangle(base_x, y, width, LINE_SPACING); // todo: optimize this
+    // todo: work out newlines
+    // todo: clean up control flow
+    for (const char *c = cur_word; ; c++) {
+        if (*c == ' ' || *c == '\n' || !*c) {
+            if (word_width > width - 2 * CLUE_MARGIN) {
+                // word is longer than one line - hyphenate
+                word_width = 0;
+                gfx_SetTextXY(x, y + 2);
+                for (c = cur_word; x + word_width + hyphen_length <= base_x + width - 2 * CLUE_MARGIN; c++) {
+                    word_width += gfx_GetCharWidth(*c);
+                    gfx_PrintChar(*c);
+                }
+                if (cur_word != c) {
+                    gfx_PrintChar('-');
+                }
+                cur_word = c;
+                goto move_to_next_line;
+            } else if (x + word_width <= base_x + width - CLUE_MARGIN) {
+                // output word
+                gfx_SetTextXY(x, y + 2);
+                for (; cur_word < c; cur_word++) {
+                    gfx_PrintChar(*cur_word);
+                }
+                cur_word++; // skip space
+                x += word_width + gfx_GetCharWidth(' ');
+                word_width = 0;
+            } else {
+move_to_next_line:
+                x = base_x + CLUE_MARGIN;
+                y += LINE_SPACING;
+                if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
+                    goto done;
+                }
+                gfx_FillRectangle(base_x, y, width, LINE_SPACING); // todo: optimize this
+                word_width = 0;
+                c = cur_word - 1;
+                continue;
+            }
+        } else {
+            word_width += gfx_GetCharWidth(*c);
+        }
+        if (!*c || *c == '\n') {
+            break;
         }
     }
     y += LINE_SPACING;
@@ -154,7 +217,7 @@ static void draw_clues(const struct game_state *state, int base_x) {
         } else {
             gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
         }
-        int new_y = word_wrap_box(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
+        int new_y = word_wrap_box_condensed(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
         fontlib_SetCursorPosition(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
         fontlib_DrawUInt(clue_num, 0);
         fontlib_DrawGlyph('.');

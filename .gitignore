@@ -2,6 +2,7 @@ obj/
 bin/
 src/gfx/*.c
 src/gfx/*.h
+src/*.inc
 .DS_Store
 convimg.out
 .venv

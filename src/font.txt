@@ -918,4 +918,34 @@ Data:
 *
 ***
 
+Codepoint: '{'
+Data:
 
+  *
+ *
+ *
+* 
+ *
+ *
+  *
+Codepoint: '|'
+Width: 3
+Data:
+
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+Codepoint: '}'
+Data:
+
+*
+ *
+ *
+  *
+ *
+ *
+*

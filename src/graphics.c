@@ -33,6 +33,7 @@ static const uint8_t font_condensed_data[] = {
     #include "font.inc"
 };
 const fontlib_font_t *font_condensed = (fontlib_font_t *)font_condensed_data;
+uint8_t clue_font_is_condensed;
 
 void init_graphics(bool dark_mode) {
     gfx_Begin();
@@ -187,12 +188,13 @@ static void draw_clues(const struct game_state *state, int base_x) {
     uint8_t clue_num = selected_clue_num ? selected_clue_num : 1;
     enum word_direction dir = cursor->dir;
     for (; y + LINE_SPACING < GFX_LCD_HEIGHT; clue_num++) {
+        int new_y;
         if (clue_num > puzzle->num_clue_pairs) {
             clue_num = 1;
             dir = !dir;
 
             gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
-            int new_y = y + LINE_SPACING + 3;
+            new_y = y + LINE_SPACING + 3;
             gfx_FillRectangle_NoClip(base_x, y, GFX_LCD_WIDTH - base_x, new_y);
 
             gfx_SetTextFGColor(CLUE_PANE_LABEL_COLOR);
@@ -206,21 +208,34 @@ static void draw_clues(const struct game_state *state, int base_x) {
         const struct clue *clue = dir == ACROSS ? pair->across : pair->down;
         if (!clue)  continue;
 
-        int indent_x = base_x + 18;
-        if (solution->filled_words[clue_num - 1][dir]) {
-            fontlib_SetForegroundColor(SOLVED_CLUE_TEXT_COLOR);
-        } else {
-            fontlib_SetForegroundColor(TEXT_COLOR);
-        }
         if (dir == cursor->dir && clue_num == selected_clue_num) {
             gfx_SetColor(SELECTED_CLUE_BACKGROUND_COLOR);
         } else {
             gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
         }
-        int new_y = word_wrap_box_condensed(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
-        fontlib_SetCursorPosition(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
-        fontlib_DrawUInt(clue_num, 0);
-        fontlib_DrawGlyph('.');
+        if (clue_font_is_condensed) {
+            int indent_x = base_x + 18;
+            if (solution->filled_words[clue_num - 1][dir]) {
+                fontlib_SetForegroundColor(SOLVED_CLUE_TEXT_COLOR);
+            } else {
+                fontlib_SetForegroundColor(TEXT_COLOR);
+            }
+            new_y = word_wrap_box_condensed(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
+            fontlib_SetCursorPosition(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
+            fontlib_DrawUInt(clue_num, 0);
+            fontlib_DrawGlyph('.');
+        } else {
+            int indent_x = base_x + 24;
+            if (solution->filled_words[clue_num - 1][dir]) {
+                gfx_SetTextFGColor(SOLVED_CLUE_TEXT_COLOR);
+            } else {
+                gfx_SetTextFGColor(TEXT_COLOR);
+            }
+            new_y = word_wrap_box(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
+            gfx_SetTextXY(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
+            gfx_PrintUInt(clue_num, 0);
+            gfx_PrintChar('.');
+        }
         y = new_y;
     }
 

@@ -3,6 +3,7 @@
 #include <keypadc.h>
 
 #include "state.h"
+#include "graphics.h"
 #include "keypad.h"
 
 struct word_ref get_cursor_word_ref(const struct puzzle *puzzle, const struct cursor *cursor) {
@@ -179,6 +180,10 @@ enum input_command handle_input(struct game_state *state) {
 
     if (keypad_has_edge(kb_KeyGraph)) {
         cursor_next_word(cursor, sol);
+    }
+
+    if (keypad_has_edge(kb_KeyVars)) {
+        clue_font_is_condensed ^= 1;
     }
 
     if (state->solution.status != CORRECT) {

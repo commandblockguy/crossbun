@@ -1,6 +1,7 @@
 #include "graphics.h"
 
 #include <graphx.h>
+#include <fontlibc.h>
 
 #include "state.h"
 
@@ -28,13 +29,82 @@ static uint16_t palette_dark[] = {
         [COMPLETE_TEXT_COLOR] = gfx_RGBTo1555(0, 255, 0),
 };
 
+static const uint8_t font_condensed_data[] = {
+    #include "font.inc"
+};
+const fontlib_font_t *font_condensed = (fontlib_font_t *)font_condensed_data;
+uint8_t clue_font_is_condensed;
+
 void init_graphics(bool dark_mode) {
     gfx_Begin();
     gfx_SetDrawBuffer();
 
     // todo: light theme
+    (void)dark_mode;
     gfx_SetPalette(palette_dark, sizeof palette_dark, 0);
     gfx_FillScreen(BACKGROUND_COLOR);
+
+    fontlib_SetFont(font_condensed, 0);
+    fontlib_SetTransparency(true);
+    fontlib_SetNewlineOptions(FONTLIB_ENABLE_AUTO_WRAP);
+    fontlib_SetForegroundColor(TEXT_COLOR);
+    fontlib_SetAlternateStopCode(' ');
+}
+
+// returns the y position of the pixel immediately below the bg rectangle
+int word_wrap_box_condensed(const char *text, int base_x, int base_y, int width, int indent_x) {
+    int y = base_y;
+    const char *cur_word = text;
+    int x = indent_x;
+    int word_width = 0;
+    int hyphen_length = fontlib_GetGlyphWidth('-');
+    if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
+        goto done;
+    }
+    gfx_FillRectangle(base_x, y, width, LINE_SPACING); // todo: optimize this
+    while (*cur_word && *cur_word != '\n') {
+        while (*cur_word == ' ')
+        {
+            x += 4;
+            cur_word++;
+        }
+        word_width = fontlib_GetStringWidth(cur_word);
+        if (word_width > width - 2 * CLUE_MARGIN) {
+            // word is longer than one line - hyphenate
+            word_width = 0;
+            fontlib_SetCursorPosition(x, y + 2);
+            const char *c = cur_word;
+            for (; x + word_width + hyphen_length <= base_x + width - 2 * CLUE_MARGIN; c++) {
+                word_width += fontlib_GetGlyphWidth(*c);
+                fontlib_DrawGlyph(*c);
+            }
+            if (cur_word != c) {
+                fontlib_DrawGlyph('-');
+            }
+            cur_word = c;
+            goto move_to_next_line;
+        } else if (x + word_width <= base_x + width - CLUE_MARGIN) {
+            // output word
+            fontlib_SetCursorPosition(x, y + 2);
+            fontlib_DrawString(cur_word);
+            cur_word = fontlib_GetLastCharacterRead();
+            x += word_width;
+        } else {
+move_to_next_line:
+            x = base_x + CLUE_MARGIN;
+            y += LINE_SPACING;
+            if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
+                goto done;
+            }
+            gfx_FillRectangle(base_x, y, width, LINE_SPACING);
+            continue;
+        }
+    }
+    y += LINE_SPACING;
+done:
+    gfx_FillRectangle(base_x, y, width, 2);
+    y += 2;
+    return y;
 }
 
 // returns the y position of the pixel immediately below the bg rectangle
@@ -64,15 +134,7 @@ int word_wrap_box(const char *text, int base_x, int base_y, int width, int inden
                     gfx_PrintChar('-');
                 }
                 cur_word = c;
-                x = base_x + CLUE_MARGIN;
-                y += LINE_SPACING;
-                if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
-                    goto done;
-                }
-                gfx_FillRectangle(base_x, y, width, LINE_SPACING); // todo: optimize this
-                word_width = 0;
-                c = cur_word - 1;
-                continue;
+                goto move_to_next_line;
             } else if (x + word_width <= base_x + width - CLUE_MARGIN) {
                 // output word
                 gfx_SetTextXY(x, y + 2);
@@ -83,7 +145,7 @@ int word_wrap_box(const char *text, int base_x, int base_y, int width, int inden
                 x += word_width + gfx_GetCharWidth(' ');
                 word_width = 0;
             } else {
-                // move to next line
+move_to_next_line:
                 x = base_x + CLUE_MARGIN;
                 y += LINE_SPACING;
                 if (y + LINE_SPACING > GFX_LCD_HEIGHT) {
@@ -126,12 +188,13 @@ static void draw_clues(const struct game_state *state, int base_x) {
     uint8_t clue_num = selected_clue_num ? selected_clue_num : 1;
     enum word_direction dir = cursor->dir;
     for (; y + LINE_SPACING < GFX_LCD_HEIGHT; clue_num++) {
+        int new_y;
         if (clue_num > puzzle->num_clue_pairs) {
             clue_num = 1;
             dir = !dir;
 
             gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
-            int new_y = y + LINE_SPACING + 3;
+            new_y = y + LINE_SPACING + 3;
             gfx_FillRectangle_NoClip(base_x, y, GFX_LCD_WIDTH - base_x, new_y);
 
             gfx_SetTextFGColor(CLUE_PANE_LABEL_COLOR);
@@ -145,21 +208,34 @@ static void draw_clues(const struct game_state *state, int base_x) {
         const struct clue *clue = dir == ACROSS ? pair->across : pair->down;
         if (!clue)  continue;
 
-        int indent_x = base_x + 24;
-        if (solution->filled_words[clue_num - 1][dir]) {
-            gfx_SetTextFGColor(SOLVED_CLUE_TEXT_COLOR);
-        } else {
-            gfx_SetTextFGColor(TEXT_COLOR);
-        }
         if (dir == cursor->dir && clue_num == selected_clue_num) {
             gfx_SetColor(SELECTED_CLUE_BACKGROUND_COLOR);
         } else {
             gfx_SetColor(CLUE_PANE_BACKGROUND_COLOR);
         }
-        int new_y = word_wrap_box(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
-        gfx_SetTextXY(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
-        gfx_PrintUInt(clue_num, 0);
-        gfx_PrintChar('.');
+        if (clue_font_is_condensed) {
+            int indent_x = base_x + 18;
+            if (solution->filled_words[clue_num - 1][dir]) {
+                fontlib_SetForegroundColor(SOLVED_CLUE_TEXT_COLOR);
+            } else {
+                fontlib_SetForegroundColor(TEXT_COLOR);
+            }
+            new_y = word_wrap_box_condensed(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
+            fontlib_SetCursorPosition(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
+            fontlib_DrawUInt(clue_num, 0);
+            fontlib_DrawGlyph('.');
+        } else {
+            int indent_x = base_x + 24;
+            if (solution->filled_words[clue_num - 1][dir]) {
+                gfx_SetTextFGColor(SOLVED_CLUE_TEXT_COLOR);
+            } else {
+                gfx_SetTextFGColor(TEXT_COLOR);
+            }
+            new_y = word_wrap_box(clue->text, base_x, y, GFX_LCD_WIDTH - base_x, indent_x);
+            gfx_SetTextXY(base_x + CLUE_MARGIN, y + CLUE_MARGIN);
+            gfx_PrintUInt(clue_num, 0);
+            gfx_PrintChar('.');
+        }
         y = new_y;
     }
 
@@ -203,11 +279,10 @@ void draw_game(const struct game_state *state) {
                 }
                 gfx_FillRectangle_NoClip(base_x + cell_size * col + 1, base_y + cell_size * row + 1, cell_size - 1, cell_size - 1);
 
-                if (c == EMPTY_CELL && current_cell->word_num) {
-                    gfx_SetTextFGColor(NUMBER_TEXT_COLOR);
-                    gfx_SetTextScale(1, 1);
-                    gfx_SetTextXY(base_x + col * cell_size + 1, base_y + row * cell_size + 1);
-                    gfx_PrintUInt(current_cell->word_num, 0);
+                if (current_cell->word_num) {
+                    fontlib_SetForegroundColor(NUMBER_TEXT_COLOR);
+                    fontlib_SetCursorPosition(base_x + col * cell_size + 1, base_y + row * cell_size + 1);
+                    fontlib_DrawUInt(current_cell->word_num, 0);
                 }
 
                 gfx_SetTextFGColor(solution->status == CORRECT ? COMPLETE_TEXT_COLOR : TEXT_COLOR);

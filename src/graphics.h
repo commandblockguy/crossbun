@@ -20,6 +20,8 @@ enum colors : uint8_t {
     COMPLETE_TEXT_COLOR,
 };
 
+extern uint8_t clue_font_is_condensed;
+
 void init_graphics(bool dark_mode);
 
 void draw_game(const struct game_state *state);

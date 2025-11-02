@@ -21,6 +21,7 @@ You'll also need to transfer at least one .8xv file containing crossword puzzles
 | graph          | graphe         | Skip to next word       |
 | mode           | mode           | Exit without saving     |
 | clear          | annul          | Save and exit           |
+| vars           | var            | Switch clue font size   |
 
 ## Converter
 This repository includes a script to convert multiple .puz files into a single crossword puzzle pack for the calculator to read.

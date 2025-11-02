@@ -500,7 +500,7 @@ Data:
 *   *
 *   *
 * * *
-*****
+ * *
 
 Codepoint: 'x'
 Data:

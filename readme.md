@@ -37,5 +37,5 @@ Then, you can run it like so: `python convert.py --title "My pack title" --descr
 
 ## Building from source
 Install the [CE C toolchain](https://ce-programming.github.io/toolchain/index.html).
-Then, run `make font`, and then `make`.
+Then, run `make`.
 The compiled program will be located at `bin/CROSSBUN.8xp`.

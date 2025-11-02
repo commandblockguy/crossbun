@@ -1,4 +1,13 @@
-#!/bin/env python
+#!/usr/bin/env python3
+#
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#  "bitstring"
+#  "puzpy"
+#  "tivars"
+# ]
+# ///
 
 import puz
 import struct
